@@ -1,9 +1,11 @@
 /* import checkNumInputs from "./checkNumInputs"; */
+import { postData } from "../services/requests";
 
 const forms = () => {
     const form = document.querySelectorAll('form'),
           inputs = document.querySelectorAll('input'),
-          upload = document.querySelectorAll('[name="upload"]');
+          upload = document.querySelectorAll('[name="upload"]'),
+          selectValue = document.querySelectorAll('.calc select');
 
 /*     checkNumInputs('input[name="user_phone"]'); */
 
@@ -21,14 +23,6 @@ const forms = () => {
         question: 'assets/question.php'
     };
 
-    const postData = async (url, data) => {
-        let res = await fetch(url, {
-            method: "POST",
-            body: data
-        });
-        return await res.text();
-    };
-
     const clearInputs = () => {
         inputs.forEach(item => {
             item.value = '';
@@ -36,7 +30,8 @@ const forms = () => {
         upload.forEach(item => {
             item.previousElementSibling.textContent = "Файл не выбран";
         });
-    }
+    };
+
 
     upload.forEach(item => {
         item.addEventListener('input', () => {
@@ -79,6 +74,27 @@ const forms = () => {
             item.closest('.popup-design') || item.classList.contains('calc_form') ? api = path.designer : api = path.question;
             console.log(api);
 
+/*             if (item.classList.contains('calc_form')) {
+                const sizeBlock = document.querySelector('#size'),
+                      materialBlock = document.querySelector('#material'),
+                      optionsBlock = document.querySelector('#options'),
+                      promocodeBlock = document.querySelector('.promocode'),
+                      resultBlock = document.querySelector('.calc-price');
+                      
+                function getSelectText (block) {
+                    let a = block.selectedIndex;
+                    let b = block.options;
+                    let c = b[a].textContent;
+                    return c;
+                };
+                
+                formData.append("Сумма заказа", resultBlock.textContent);
+                formData.append("Размер", getSelectText(sizeBlock));
+                formData.append("Материал", getSelectText(materialBlock));
+                formData.append("Доп. Опции", getSelectText(optionsBlock));
+                formData.append("Промокод", promocodeBlock.textContent);
+            }; */
+
             // отправляем собранные данные на сервер
             postData(api, formData)
                 .then(res => {
@@ -104,3 +120,13 @@ const forms = () => {
 };
 
 export default forms;
+
+
+
+
+/* const price = document.querySelector('.calc-price').textContent
+if (!isNaN(+price)) formData.append('price', price)
+
+for (let key of formData.entries()) {
+    console.log(key); /// тут можно посмотреть ключи в форм дате
+} */
