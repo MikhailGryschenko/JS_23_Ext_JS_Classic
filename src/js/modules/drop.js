@@ -1,3 +1,5 @@
+import { postData } from "../services/requests";
+
 const drop = () => {
     const fileInputs = document.querySelectorAll('[name="upload"]');
 
@@ -47,6 +49,15 @@ const drop = () => {
             arr[0].length > 5 ? dots = "..." : dots = ".";
             const name = arr[0].substring(0, 5) + dots + arr[1];
             input.previousElementSibling.textContent = name;
+
+            if (input.closest('main')) {
+                const formData = new FormData();
+                formData.append('file', input.files[0]);
+                postData('assets/server.php', formData)
+                    .then(res => {
+                        console.log(res);
+                    });
+            };
         });
     });
 };
